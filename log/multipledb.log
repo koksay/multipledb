@@ -1,16 +1,28 @@
-20141229142535 [INFO] Application started
-20141229142544 [INFO] Application terminated
-20141229161344 [INFO] Application started
-20141229161347 [INFO] [DB1        ] Connected
-20141229161347 [INFO] [DB2        ] Connected
-20141229161347 [INFO] [DB3        ] Connected
-20141229161347 [INFO] [DB4        ] Connected
-20141229161401 [INFO] [DB1        ] select * from tdc_ccn where ccn_id=0
-20141229161401 [INFO] [DB2        ] select * from tdc_ccn where ccn_id=0
-20141229161401 [INFO] [DB3        ] select * from tdc_ccn where ccn_id=0
-20141229161401 [INFO] [DB4        ] select * from tdc_ccn where ccn_id=0
-20141229161408 [INFO] [DB1        ] Disconnected
-20141229161409 [INFO] [DB2        ] Disconnected
-20141229161409 [INFO] [DB3        ] Disconnected
-20141229161409 [INFO] [DB4        ] Disconnected
-20141229161409 [INFO] Application terminated
+20141229230554 [INFO] Application started
+20141229230559 [INFO] [DB1        ] Connected
+20141229230600 [INFO] [DB2        ] Connected
+20141229230640 [INFO] [DB1        ] select * from operator_timezones where mcc_mnc like '286%'
+20141229230640 [INFO] [DB2        ] select * from operator_timezones where mcc_mnc like '286%'
+20141229230743 [INFO] [DB1        ] delete from operator_timezones where mcc_mnc='28603'
+20141229230743 [INFO] [DB1        ] Query OK, 1 row affected
+20141229230743 [INFO] [DB2        ] delete from operator_timezones where mcc_mnc='28603'
+20141229230743 [INFO] [DB2        ] Query OK, 1 row affected
+20141229230747 [INFO] [DB1        ] Committed
+20141229230747 [INFO] [DB2        ] Committed
+20141229230751 [INFO] [DB1        ] select * from operator_timezones where mcc_mnc like '286%'
+20141229230751 [INFO] [DB2        ] select * from operator_timezones where mcc_mnc like '286%'
+20141229230858 [INFO] [DB1        ] insert into operator_timezones values ('1501', 'Avea Iletisim Hizmetleri A.S.', '28604', '8000', '8000', '1/1/2012', '1/1/2012')
+20141229230858 [ERROR] ORA-00001: unique constraint (USER1.OPERATOR_TIMEZONES_PK) violated
+20141229230858 [INFO] [DB2        ] insert into operator_timezones values ('1501', 'Avea Iletisim Hizmetleri A.S.', '28604', '8000', '8000', '1/1/2012', '1/1/2012')
+20141229230858 [ERROR] ORA-00001: unique constraint (USER2.OPERATOR_TIMEZONES_PK) violated
+20141229230910 [INFO] [DB1        ] insert into operator_timezones values ('1501', 'Avea Iletisim Hizmetleri A.S.', '28603', '8000', '8000', '1/1/2012', '1/1/2012')
+20141229230910 [INFO] [DB1        ] Query OK, 1 row affected
+20141229230910 [INFO] [DB2        ] insert into operator_timezones values ('1501', 'Avea Iletisim Hizmetleri A.S.', '28603', '8000', '8000', '1/1/2012', '1/1/2012')
+20141229230910 [INFO] [DB2        ] Query OK, 1 row affected
+20141229230923 [INFO] [DB1        ] select * from operator_timezones where mcc_mnc like '286%'
+20141229230923 [INFO] [DB2        ] select * from operator_timezones where mcc_mnc like '286%'
+20141229230930 [INFO] [DB1        ] Committed
+20141229230930 [INFO] [DB1        ] Disconnected
+20141229230933 [INFO] [DB2        ] Committed
+20141229230933 [INFO] [DB2        ] Disconnected
+20141229230957 [INFO] Application terminated
