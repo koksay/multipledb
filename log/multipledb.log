@@ -1,0 +1,16 @@
+20141229142535 [INFO] Application started
+20141229142544 [INFO] Application terminated
+20141229161344 [INFO] Application started
+20141229161347 [INFO] [DB1        ] Connected
+20141229161347 [INFO] [DB2        ] Connected
+20141229161347 [INFO] [DB3        ] Connected
+20141229161347 [INFO] [DB4        ] Connected
+20141229161401 [INFO] [DB1        ] select * from tdc_ccn where ccn_id=0
+20141229161401 [INFO] [DB2        ] select * from tdc_ccn where ccn_id=0
+20141229161401 [INFO] [DB3        ] select * from tdc_ccn where ccn_id=0
+20141229161401 [INFO] [DB4        ] select * from tdc_ccn where ccn_id=0
+20141229161408 [INFO] [DB1        ] Disconnected
+20141229161409 [INFO] [DB2        ] Disconnected
+20141229161409 [INFO] [DB3        ] Disconnected
+20141229161409 [INFO] [DB4        ] Disconnected
+20141229161409 [INFO] Application terminated
