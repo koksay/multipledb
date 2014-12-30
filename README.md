@@ -12,8 +12,25 @@ pip install tabulate
 
 Readline module is optional, but it provides better interface like history, backspace/arrow keys, ..etc.
 
+## Configuration
+The config file under "conf" directory is used for DB configuration. 
 
-## USAGE EXAMPLE
+- Under [DATABASES] section, dsn information is given for each database. 
+- Under [USERS] section, username/password information is given for each database. The credentials are seperated by ";"
+
+Example:
+```
+[DATABASES]
+DB1 = (DESCRIPTION=(FAILOVER=on)(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=db1_1-vip.foo.bar)(PORT=1521))(ADDRESS=(PROTOCOL=TCP)(HOST=db1_2-vip.foo.bar)(PORT=1521)))(CONNECT_DATA=(FAILOVER_MODE=(TYPE=session)(METHOD=basic)(RETRIES=180)(DELAY=5))(SERVER=dedicated)(SERVICE_NAME=testdb)))
+DB2 = (DESCRIPTION=(FAILOVER=on)(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=db2_1-vip.foo.bar)(PORT=1521))(ADDRESS=(PROTOCOL=TCP)(HOST=db2_2-vip.foo.bar)(PORT=1521)))(CONNECT_DATA=(FAILOVER_MODE=(TYPE=session)(METHOD=basic)(RETRIES=180)(DELAY=5))(SERVER=dedicated)(SERVICE_NAME=testdb)))
+
+[USERS]
+DB1 = user1;password1
+DB2 = user2;password2
+```
+
+
+## Usage Example
 
 ```
 $ ./multipledb.py
