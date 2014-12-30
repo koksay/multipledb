@@ -30,7 +30,7 @@ class MultipleDB(cmd.Cmd):
     def __init__(self):
         cmd.Cmd.__init__(self)
         dir_name = path.dirname(__file__)
-        config_file = path.join(dir_name, '..', 'etc', 'multipledb.conf')
+        config_file = path.join(dir_name, '..', 'conf', 'multipledb.conf')
         log_file = path.join(dir_name, '..', 'log', 'multipledb.log')
         logging.basicConfig(filename=log_file, level='INFO', format='%(asctime)s [%(levelname)s] %(message)s',
                             datefmt='%Y%m%d%H%M%S')
