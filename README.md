@@ -1,11 +1,23 @@
 MultipleDB
 ==========
 
-Shell to run SQL commands on more than one Oracle DB at the same time.
+Shell to run SQL commands on more than one DB at the same time. Currently, only below commands are implemented:
 
-Following modules are required:
+```
+ORACLE: select, insert, update, delete
+SYBASE: select
+MySQL: select
+```
+
+Depending on the database you want to connect, one or more of the following modules are required:
 - cx_Oracle (http://cx-oracle.sourceforge.net):
 pip install cx_Oracle
+
+- python-mysql (https://pypi.python.org/pypi/MySQL-python/1.2.5)
+
+- python-sybase (http://python-sybase.sourceforge.net) 
+
+Following module is required:
 
 - tabulate (https://pypi.python.org/pypi/tabulate):
 pip install tabulate
@@ -21,12 +33,29 @@ The config file under "conf" directory is used for DB configuration.
 Example:
 ```
 [DATABASES]
+[DATABASES_ORACLE]
 DB1 = (DESCRIPTION=(FAILOVER=on)(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=db1_1-vip.foo.bar)(PORT=1521))(ADDRESS=(PROTOCOL=TCP)(HOST=db1_2-vip.foo.bar)(PORT=1521)))(CONNECT_DATA=(FAILOVER_MODE=(TYPE=session)(METHOD=basic)(RETRIES=180)(DELAY=5))(SERVER=dedicated)(SERVICE_NAME=testdb)))
 DB2 = (DESCRIPTION=(FAILOVER=on)(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=db2_1-vip.foo.bar)(PORT=1521))(ADDRESS=(PROTOCOL=TCP)(HOST=db2_2-vip.foo.bar)(PORT=1521)))(CONNECT_DATA=(FAILOVER_MODE=(TYPE=session)(METHOD=basic)(RETRIES=180)(DELAY=5))(SERVER=dedicated)(SERVICE_NAME=testdb)))
 
-[USERS]
+[USERS_ORACLE]
 DB1 = user1;password1
 DB2 = user2;password2
+
+[DATABASES_SYBASE]
+SYBASE_DB1 = database1
+SYBASE_DB2 = database2
+
+[USERS_SYBASE]
+SYBASE_DB1 = user1;password1
+SYBASE_DB2 = user2;password2
+
+[DATABASES_MYSQL]
+MYSQL_DB1 = 10.10.10.1:3306:database1
+MYSQL_DB2 = 10.10.10.2:3306:database2
+
+[USERS_MYSQL]
+MYSQL_DB1 = user1;password1
+MYSQL_DB2 = user2;password2
 ```
 
 
@@ -34,8 +63,9 @@ DB2 = user2;password2
 
 ```
 $ ./multipledb.py
+*** DB Type was not provided. ORACLE was selected by default!.. ***
 Welcome to MultipleDB application.
-Version: 0.1
+Version: 0.3
 
 (Cmd) list
 Configured DBs:
@@ -188,6 +218,25 @@ help
 
 (Cmd) quit
 Bye...
-$ 
+$ ./multipledb.py oracle
+Welcome to MultipleDB application.
+Version: 0.3
+
+(Cmd) quit
+Bye...
+$ ./multipledb.py sybase
+Welcome to MultipleDB application.
+Version: 0.3
+
+(Cmd) quit
+Bye...
+$ ./multipledb.py mysql 
+Welcome to MultipleDB application.
+Version: 0.3
+
+(Cmd) quit
+Bye...
+$ ./multipledb.py pgsql
+*** DB Type must be ORACLE, SYBASE or MYSQL. Exiting...
 ```
 
