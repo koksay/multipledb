@@ -122,6 +122,7 @@ class MultipleDB(cmd.Cmd):
             try:
                 if self.db_type == 'ORACLE':
                     con = self.database.connect(user, passwd, self.dbs[db])
+                    con.outputtypehandler = self.NumbersAsString
                 elif self.db_type == 'SYBASE':
                     con = self.database.connect(db, user, passwd, self.dbs[db])
                 elif self.db_type == 'MYSQL':
@@ -164,6 +165,10 @@ class MultipleDB(cmd.Cmd):
         except AttributeError:
             print "Not connected to any DB. Run 'connect' command"
             return
+
+    def NumbersAsString(self, cursor, name, defaultType, size, precision, scale): 
+        if defaultType == self.database.NUMBER: 
+            return cursor.var(str, 100, cursor.arraysize)
 
     def do_select(self, line):
         """
