@@ -12,14 +12,15 @@ HISTORY
   Version 0.1: Initial Release, 20141228
   Version 0.2: Sybase Connection added, 20150105
   Version 0.3: MySQL Connection added, 20150110
+  Version 0.4: desc command added for Oracle, 20160215
 """
 
 import cmd
-import sys
-import tabulate
 import logging
 import logging.handlers
 import os
+import sys
+import tabulate
 from ConfigParser import SafeConfigParser
 from datetime import datetime
 try:
@@ -68,8 +69,8 @@ class MultipleDB(cmd.Cmd):
         self.dbs = self.parse_config(config_file, self.db_section)
         self.credentials = self.parse_config(config_file, self.user_section)
         self.db_list = self.dbs.keys()
-        self.prompt = "\n(Cmd) "
-        self.intro = "Welcome to MultipleDB application.\nVersion: 0.3"
+        self.prompt = "\n(SQL) "
+        self.intro = "Welcome to MultipleDB application.\nVersion: 0.4"
         self.connection = {}
         self.logger = self.initiate_logger(log_file)
         self.logger.info('Application started. DB Type: %s' % self.db_type)
@@ -159,9 +160,9 @@ class MultipleDB(cmd.Cmd):
         try:
             for name in sorted(self.dbs.keys()):
                 if name in self.connection.keys():
-                    print "%-12s: CONNECTED" % name
+                    print "%-15s: CONNECTED" % name
                 else:
-                    print "%-12s: NOT CONNECTED" % name
+                    print "%-15s: NOT CONNECTED" % name
         except AttributeError:
             print "Not connected to any DB. Run 'connect' command"
             return
@@ -181,6 +182,7 @@ class MultipleDB(cmd.Cmd):
 
         for name, con in connections.items():
             cur = con[0].cursor()
+            cur.arraysize = 1000
             sql = "select " + line
             print name
             try:
@@ -315,6 +317,50 @@ class MultipleDB(cmd.Cmd):
             self.logger.info("[%-11s] Query OK, %d %s affected" % (name, num_rows, num_rows == 1 and 'row' or 'rows'))
             if num_rows > 0:   # there is an uncommitted transaction
                 self.connection[name][1] = 1
+            cur.close()
+
+    def do_describe(self, table_name):
+         self.do_desc(table_name)
+
+    def do_desc(self, table_name):
+        if self.db_type == 'ORACLE':
+            self.desc_oracle(table_name)
+        elif self.db_type == 'SYBASE':
+            print "Sybase update not yet implemented!..."
+        elif self.db_type == 'MYSQL':
+            print "MySQL update not yet implemented!..."
+
+    def desc_oracle(self, table_name):
+        connections = self.connection
+        if not connections:
+            print "Not connected to any DB. Run 'connect' command"
+            return
+
+        for name, con in connections.items():
+            cur = con[0].cursor()
+            sql = 'select * from %s where 1=0' % table_name
+            print name
+            try:
+                self.logger.info('[%-11s] %s' % (name, sql))
+                start = datetime.now()
+                cur.execute(sql)
+                end = datetime.now()
+            except (self.database.DatabaseError, self.database.InterfaceError) as e:
+                print "Database exception %s" % (str(e).strip())
+                self.logger.error(str(e).strip())
+                cur.close()
+                continue
+            duration = end - start
+            data = []
+            columns = ['Column Name', 'Data Type', 'Data Length', 'Null?']
+            for col in cur.description:
+                col_name = col[0]
+                data_type = col[1].__name__
+                data_length = col[3]
+                nullable = col[6]
+                data.append([col_name, data_type, data_length, nullable])
+                
+            print tabulate.tabulate(data, columns, tablefmt='grid')
             cur.close()
 
     def do_commit(self, dbname):
